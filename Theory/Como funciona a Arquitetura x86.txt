@@ -1,0 +1,163 @@
+Como funciona a Arquitetura x86
+
+
+|> A Arquitetura x86
+
+Arquitetura -> Descreve as características de uma linha de processadores
+
+Surge com o ISA x86-16 com o 8086 da Intel, em 1978
+	- Operava com 16 Bit
+
+Consolidou-se x86-32 com o 80386DX, lançado em 1985
+	- Operando em 32 Bit
+	- Base de muitos processadores
+
+|> Modelo de Arquitetura x86
+
+Baseado no modelo de Von Neumann
+Memória Interna -> Armazenamento de Dados
+Unidade Central de Processamento -> Executa Instruções
+	- Unidade Lógica e Aritmética -> Realiza operações lógicas e aritméticas
+	- Unidade de Controle -> Controla fluxo de dados e a execução de instruções
+	- Registradores -> Pequenas e rápidas células de armazenamento
+Dispositivos de Entrada e Saída -> Interface com o exterior
+Barramentos -> Caminhos que interligam os componentes
+
+Memória
+
+Unidade de Controle
+Unidade Aritmética e Lógica (Acumulador) -> [Entrada (Input), Saída (Output)]
+
+|> Pequenas células de armazenamento -> Dentro da CPU
+	- Acesso Rápido -> Posições intermediárias para manipulação de dados
+	- Armazenamento Temporário -> Volátil
+	- Comunicação ULA >< UC -> Essencial para utilização de instruções
+
+|> A Arquitetura x86 a princípio dispõe de 16 registradores
+	- São de propósito geral ou de propósitos especifico
+	- Os de propósito geral podem ter um uso especifico
+
+|> Propósito Geral
+| EAX (Acumulador) -> EBP (Base da Pilha)
+| EBX (Base) -> ESP (Ponteiro de Pilha)
+| ECX (Contador) -> EDI (Índice de Destino)
+| EDX (Dados) -> ESI (Índice de Origem)
+
+|> Propósito Especifico
+| EFLAGS (Estado da CPU)
+| EIP (Ponteiro de Instrução)
+| CS, DS, SS (Segmentos Principais)
+| ES, GS, FS (Segmentos Extra)
+
+|> Registradores MMX -> Primeiras operações SIMD
+	- MMX -> Primeira tecnologia de instruções vetoriais da Intel
+	- SIMD -> Single Instruction, multiple data
+	- Adicionado no Pentium -> Melhorar a performance de operações de multimídia e comunicação
+	- Oito registradores de 64 bit MMX0 a MMX7
+		- "Apelidos" para os registradores usados na FPU
+	- Instruções MMX operam com os registradores em paralelo
+
+
+|> Registradores XMM -> Operações SIMD utilizados por SSE
+	- SSE -> Streaming SIMD Extensions
+	- Depois utilizado pelo AVX
+	- Oito registradores de 128 bit XMM0 a XMM7
+
+|> Unidade de Ponto Flutuante (FPU)
+	- Realiza operações de ponto flutuante em alto performance
+	- Inicialmente um coprocessador x87 do x86
+		- Integrado no chip a partir do I468
+	- Oito registradores de 80 bit ST(0) a ST(7)
+	- Outros registradores para controle
+
+
+- é possível acessar partes dos registradores de propósito geral
+	- Registrador de 32 bit (explícito)
+	- Parte de 16 bit
+	- Parte de 8 bit
+		- High (H)
+		- Low (L)
+	- Aplicável a EAX, EBX, ECX e a EDX
+
+- Para os ESI, EDI, EBP e ESP somente há partes de 16 bit
+
+- Instruções -> Algo que o processador sabe fazer
+	- Conjunto de Instruções
+	- Dois designs principais -> CISC e RISC
+
+- Design CISC -> Conjunto Complexo de Instruções
+	- Instruções levam vários ciclos de clock
+	- CISC está a incorporar o design RISC
+	- Exemplo de Arquitetura: x86, AMD64, MCS-51, etc
+
+- 8086 -> Primeiro membro da família IA-16
+- 80386DX -> Primeiro membro da família IA-32
+	- Introduziu registradores de 32 bits e barramentos de endereço de 32 bit
+	- Pode endereçar memória virtual maior que a memória física
+	- Cada programa tem 4GB de espaço de endereçamento linear
+
+- Xeon -> Primeiro membro da família IA-64
+	- Intel64 -> Implementação da Intel do x86-64 da AMD, com o opteron
+	- Espaço de endereçamento de 64 bit
+	- Retrocompatibilidade com IA-32
+
+
+- Instruções Manipulam:
+	- Unidade Lógica e Aritmética
+	- Unidade de Controle
+	- Interrupções
+	- Coprocessadores
+
+- Instruções Mnemônicas:
+	- Facilita a memorização e entendimento
+
+- Importância
+	- Programador conhece o ambiente
+	- Arquitetura "Simples" -> Fácil Migração
+	- Controle Total de Hardware ou suprimido pelo Sistema Operacional
+
+- Gerenciamento de Memória -> Modo de processamento
+	- Cada um tem vantagens e desvantagens
+	- Proteção de partes da memória
+
+- Protegido -> Nativo e com memória segmentada
+	- Mais robusto >< Restrições de acesso ao hardware
+	- Suporta vários programas ao mesmo tempo
+	- Cada programa -> área de memória protegida de 4GB
+	- Exemplos: Linux e Windows 10
+
+- Real -> Sem restrições de acesso a memória e I/O
+	- Suporta apenas um programa por vez
+	- Apenas 1MB de memória endereçável
+	- Sem restrições de acesso ao hardware
+		- Acesso a qualquer localização de memória
+		- Interrupções ativas
+
+	- Exemplos: MS-DOS, Windows 95 e Windows 98
+
+- Ainda há alguns modos especiais
+- Virtual-8086 -> Híbrido entre o modo real e protegido
+	- Opera em modo protegido -> Cria um ambiente virtual do 8086
+	- Simula sua operação em modo de endereçamento real
+	- Exemplos: Janela de comando do Window NT e Windows 2000
+- Gerenciamento do sistema -> Segurança ou gerenciamento de energia
+
+- Memória física é endereçada como Memória Virtual
+	- Primeira grande abstração de hardware
+	- Um endereçamento da memória virtual pode ser na verdade do HD
+	- Porção ativa fica na memória principal
+
+- Memória Virtual é dividida em espaços de endereçamento
+	- Programas não acessam dados de outros programas
+	- Espaços de endereçamento protegidos uns dos outros
+
+
+- Cada espaço de endereçamento é dividido em segmentos
+	- Particionamento do espaço do programa para organização
+	- Dados separados de instruções
+- É possível navegar pelos segmentos por deslocamento
+	- Por exemplo: Chegar a um endereço no segmento de dados partido do início
+
+
+
+

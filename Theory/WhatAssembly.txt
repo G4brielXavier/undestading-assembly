@@ -1,0 +1,167 @@
+|> Computador -> Máquina capaz de processar dados
+
+|> Instruções -> Algo que o processador consiga realizar
+
+|> Primeiros Computadores -> Programação em Baixo nível
+	- Em cima do hardware -> Sem abstração
+
+|> Componentes do Computador -> Eletrônica Digital
+	- Circuitos Lógicos -> Níveis de tensão representam valores
+		- 0V -> Desligado
+		- 5V -> Ligado
+	- Processador -> Capacidade de Executar operações descritas por instruções
+	- Programação -> Valor Binário
+		- 0 -> Interruptor Desligado
+		- 1 -> Interruptor Ligado
+	- Programa Comum -> Milhares de 0's e 1's
+	- Programação monótona
+
+|> Solução -> Notação Simbólica
+	- Escrever o código com símbolos
+	- Traduzir para números
+	- Passar para o computador
+	- Símbolos -> Binários -> Computador
+
+|> Problema -> "Endereços" estáticos
+	- Programa dividido em partes
+		- Instruções
+		- Dados
+	- Programador atento a onde estão as instruções
+	- Adicionar algo em um certo ponto
+		- Mudança de "Endereços"
+
+|> Solução -> Programação Dinâmica
+	- Assembly -> Linguagem de montagem
+	- Assembler -> Software "Montador"
+	- Utilização de Rótulos
+	- Endereços ajustados pelo Assembler
+
+
+
+______________________________________________________________
+
+Endereço	Conteúdo
+
+101	0010	0010	101	2201
+102	0001	0010	102	1202
+103	0001	0010	103	1203
+104	0011	0010	104	3204
+
+-> Programa Binário
+
+_____________________________________________________________
+
+Endereço 	Instrução
+
+101	    LDA	    201
+102	    ADD	    202
+103	    ADD	    203
+104	    STA	    204
+
+201	    DAT	    2
+202	    DAT	    3
+203	    DAT	    4
+204	    DAT	    0
+
+-> Programa Simbólico
+
+_____________________________________________________________
+
+Rótulo		Operação	Operando
+
+FORMUL		LDA		I
+		ADD		J
+		ADD		K
+		STA		N
+
+I		DATA		2
+J		DATA		3
+K		DATA		4
+N		DATA		0
+
+-> Programa em Linguagem de Montagem (assembly)
+
+
+Na Teoria:
+
+- Linguagem de programação de baixo nível e a mais antiga
+- Linguagens de programação categorizadas quanto a abstração do hardware proporcionada
+	- Por exemplo: C -> Alto nível de abstração do Hardware
+
+- Linguagem Assembly -> Instruções do Processador 
+- Programar Assembly -> Mais próximo o possível do processador
+- Assembly = Código de Máquina?
+
+
+| Nível de Abstração
+	- Linguagem de Alto nível
+	- Linguagem Assembly
+	- Códigos de Operação
+	- Sistema em Lógica Digital
+
+
+|> Na Prática:
+	- Cada arquitetura de processadores tem diferentes instruções
+	- Arquiteturas novas precisam de documentação -> Desenvolvimento
+	- Conjunto de Instruções da Arquitetura
+		- Código de operação de máquina -> Inteligível
+		- Solução -> Instruções em formato de texto mnemônico
+	- Instruções em Código de máquina >< instruções Mnemônicas
+		- Correspondência quase direta
+		- Quase nenhuma abstração
+
+|> Resumindo:
+	- Código Assembly -> Código de operação de máquina simbólicos
+	- Programa em assembly -> Interface CPU
+	- Acesso direto ao hardware
+
+|> Assembly código de máquina que não é código de máquina (?)
+	- Instruções do Processador
+	- Entendível
+
+|> Comparativo:
+	- Código de máquina:
+		- 0x88C3
+	- Assembly:
+		- MOV BL, AL
+
+|> C e C++ -> Meio termo
+	- Acesso ao hardware possível mas não portátil
+	- Compiladores podem gerar código assembly visualizável
+
+|> Fácil comunicação com assembly
+	- Programar em C juntamente com assembly
+	- Utilização do Ligador
+
+
+|> Nome "Assembly" deriva de "Assembler"
+	- "A program that assembles another program consisting of several sections into a single program."
+
+|> Compilação -> Converte código em alto nível para Assembly
+
+|> Montagem -> Converte o código em Assembly Mnemônico para o código de operação máquina
+	- Faz adições para facilitar a programação
+		- Ex: Pré-processador
+
+|> Logo -> No final das contas todo programa executa no nível mais baixo
+
+Código em C -> (Compilação) -> Código em Assembly -> (Montagem) -> Código de Máquina
+
+|> Ligador -> Combina arquivos gerados pelo montador em um arquivo
+
+|> "Working at the low level can help provide the basis for understanding and appreciating the details of the tool chain"
+
+|> Programador deve entender como sua arquitetura funciona
+
+|> "Conhecer o campo de batalha é antecipar o movimento do inimigo. Conhecer o inimigo é antecipar a vitória." Sun Tzu, autor de "Arte da Guerra".
+
+|> Controle direto sobre recursos do Sistema
+
+|> Eficiência da programação Assembly vs C
+	- Assembly -> Mais eficiente em casos específicos
+		- Preço -> Tempo de Projeto
+	- C -> Mais eficiente na maioria dos casos (Compilador)
+		- Preço -> Tamanho do Programa
+	- Melhor Forma -> C em conjunto com Assembly
+		- Programa em C com partes em Assembly que realizam ações especificas em baixo nível
+

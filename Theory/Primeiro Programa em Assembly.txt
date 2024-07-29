@@ -1,0 +1,240 @@
+# Primeiro Programa em Assembly
+
+- Assembly -> instruções do processador
+	- Baixo nível de abstração
+	- Controle de hardware
+	- Equivalência de quase 1 para 1 com Código de máquina numérico
+
+- Assembler -> Converter código Assembly em Opcodes
+- Por que o nome "Assembly"?
+	- Deriva de "Assembler" -> "Um programa que monta outro programa que consiste em diversas partes em um único programa"
+
+- O Assembler NASM -> Netwide Assembler
+	- Suporta x86 e x86-64
+	- Windows e Linux
+	- Sintaxe Descomplicada e Simplificada
+
+- Operações Executadas pela CPU
+	- Instruções -> "Algo que a CPU saiba realizar"
+	- Ex: Movimentar dados na memória
+
+- Instruções Manipulam
+	- Unidade Lógico Aritmética
+	- Unidade de Controle
+	- Interrupções
+	- Coprocessadores
+
+<code instrução='x86'>
+	MOV EAX, 1
+	MOV EBX, 2
+	ADD EAX, EBX
+</code>
+
+- Cada arquitetura tem um conjunto de instruções (ISA)
+- Dois tipos de Designs:
+	- Conjunto complexo de instruções (CISC)
+		- Design Original
+		- Instruções levam vários ciclos de clock
+		- Exemplos: x86, x86-64, MCS-51
+	- Conjunto reduzido de instruções (RISC)
+		- Redesign do CISC
+		- Instruções levam apenas um ciclo de clock
+		- Exemplos: ARM, AVR, PIC
+		- Maioria das famílias de microcontroladores
+
+- Cenário Atual -> CISC incorporando RISC
+
+
+
+|> INSTRUÇÕES EM ASSEMBLY
+
+- Ideias Centrais:
+	- Mnemônicos ao invés de Opcodes -> Facilitar a programação
+		- 0xBB03000000 -> MOV EAX, 3
+		- 0x41 -> INC ECX
+	- Baixo Nível de Abstração -> Visão próxima do hardware
+		- Mova o valor do acumulador para o endereço 50 na memória
+			- Assembly -> MOV [0x50], EAX
+		- Para comparação > Alto nível de abstração
+			- Visão distante do hardware
+			- Visão abstraída da memória
+			- C -> posição memória = valor;
+
+- Formato de uma instrução mnemônica:
+	- Mnemônico simbolizando a instrução
+	- Operando(s):
+		- Dois
+		- Um
+		- Nenhum
+	- Como funciona?
+		- Assembly -> MOV destino, origem
+		- C -> destino = origem
+
+
+|> INSTRUÇÕES BÁSICAS
+
+- Texto Mnemônico -> Técnicas e estratégias usadas lembrar de algo
+	- Nomes memorizáveis
+	- Possível descobrir sua função pelo nome
+
+- Exemplos de Instruções x86:
+
+	- MOV -> Move
+		- Instrução de Movimentação -> MOV destino, origem
+		- Em C -> destino = origem;
+
+	- ADD -> Add
+		- Instrução de Adição -> ADD destino, origem
+		- Em C -> destino = destino + origem;
+
+	- SUB -> Subtract
+		- Instrução de Subtração -> SUB destino, origem
+		- Em C -> destino = destino - origem;
+
+	- RET -> Return
+		- Instrução de Retorno .RET
+		- Em C -> return valor_de_retorno
+		- Retorna de uma função
+		- Presume-se que o valor de retorno está em EAX
+
+
+
+
+
+ |> EQUIVALÊNCIAS BÁSICAS
+
+- Vamos verificar as equivalências entre C e Assembly
+
+in C:
+
+int main() {
+	int num1 = 3;
+	int num2 = 6;
+	int res = 0;
+	res = num1 + num2;
+	return 0;
+}
+
+in Assembly:
+
+SECTION .data
+num1 DD 3
+num2 DD 6
+res DD 0
+
+SECTION .text
+GLOBAL main
+main:
+	MOV EAX, [num1]
+	MOV EBX, [num2]
+	ADD EAX, EBX
+	MOV [res], EAX
+	MOV EAX, 0
+	RET
+
+- Valores na memória:
+	- Alto nível de abstração -> int num1 = 3;
+	- Baixo nível de abstração -> num1 DD 3;
+	- Reserve 4 bytes de memória
+	- A esse espaço reservado atribua o valor 3
+
+- Soma:
+	- Alto nível de abstração -> res = num1 + num2;
+	- Baixo nível de abstração -> ADD EAX, EBX
+	- Observe que uma operação em alto nível pode ser convertida em várias instruções em baixo nível
+	- Instruções em Assembly x86 tem limite de operandos
+	- Logo programas em Assembly são mais complexos
+
+- Função Principal:
+	- Alto nível de abstração -> int main(){}
+	- Baixo nível de abstração -> main:
+
+- Retorno da função principal:
+	- Alto nível de abstração -> return 0;
+	- Baixo nível de abstração -> RET
+
+
+|> SEÇÕES DO CÓDIGO
+
+- Memória Real é endereçada como memória virtual 
+- Memória virtual é dividida em espaços de endereçamento
+- Cada espaço de endereçamento é dividido em partes chamadas de segmentos
+
+- Um programa em Assembly é dividido em três seções:
+	- SECTION .data
+		- Dados Inicializados
+	- SECTION .bss
+		- Dados não inicializados
+		- Conteúdo dever ser preenchidos
+	- SECTION .text
+		- Onde fica o código
+		- Começa com a declaração da função main
+		- Mostra ao Kernel onde começa o programa
+
+
+|> SEÇÃO DE TEXTO
+	
+- Retorno da função principal
+	- Instrução RET -> Retorna da função com o valor da EAX
+	- Retorna 0 para quem chamou a função main
+	- Termina o programa sem erros
+
+<code>
+	SECTION .data
+	value DD 2
+
+	SECTION .bss
+	value RESD 1
+
+	SECTION .text
+	GLOBAL main
+	main:
+		...
+		MOV EAX, 8
+		RET
+</code>
+
+|> SEÇÃO DE DADOS INICIALIZADOS
+
+- Define um espaço na memória a uma variável
+	- Valor pré-estabelecido
+
+- Para armazenar valores na memória principal é preciso:
+	- Etiqueta
+	- Tamanho do dado
+	- Valor a ser armazenado
+
+- Para definir um valor na memória:
+	- Pseudo instrução DX -> Define X
+		- Onde X é o tamanho do dado
+		- Ex: Define Word -> DW
+
+
+Tipo do dado	Pseudo instrução	Tamanho
+
+Byte		Define Byte -> DB	Aloca 1 Byte
+Word		Define Word -> DW	Aloca 2 Byte	
+Double word	Define DWord -> DD	Aloca 4 Byte
+Quad word	Define QWord -> DQ	Aloca 8 Byte
+Ten Byte	Define TenByte -> DT	Aloca 10 Byte
+
+|> Conclusão
+
+- Por que usar registradores como intermediários?
+	- ADD[num1], [num2] -> Operação Inválida
+	- Memória RAM só tem dois estados exclusivos
+		- Leitura ou Escrita
+		- Registrador -> Armazenamento temporário para trocar de estado
+	- Solução -> MOV EAX, [num1], ADD EAX, [num2]
+
+- Ferramentas Necessárias
+	- NASM
+	- IDE SASM
+	- GCC ou MinGW-64
+	- GCC-Multilib
+	- Conhecer as características gerais da arquitetura
+	- Saber fundamentos de programação
+	- Entender o funcionamento da pilha
+
+	
+
